@@ -1,7 +1,6 @@
 package com.ipv404.repositories;
 
 import com.ipv404.models.Hostel;
-import com.ipv404.models.Student;
 import com.ipv404.utils.DatabaseUtil;
 
 import java.sql.*;
