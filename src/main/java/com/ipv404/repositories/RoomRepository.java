@@ -64,7 +64,7 @@ public class RoomRepository {
             }
         }
 
-    public Student findById(Long id) {
+    public Room findById(Long id) {
         String sql = "SELECT * FROM student WHERE room_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -81,24 +81,24 @@ public class RoomRepository {
         }
     }
 
-    public List<Student> findAll() {
+    public List<Room> findAll() {
         String sql = "SELECT * FROM room";
-        List<Room> students = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
 
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                students.add(mapResultSetToRoom(rs));
+                rooms.add(mapResultSetToRoom(rs));
             }
-            return room;
+            return rooms;
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving students", e);
         }
     }
 
-    public Student findByRoomId(String studentId) {
+    public Room findByRoomId(String studentId) {
         String sql = "SELECT * FROM student WHERE student_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
