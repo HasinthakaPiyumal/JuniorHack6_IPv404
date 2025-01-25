@@ -2,12 +2,10 @@ package com.ipv404.menus;
 
 import java.util.Scanner;
 
-import javax.swing.text.View;
-
-public class HostelMenu {
+public class StudentAllocationMenu {
     private final Scanner scanner;
 
-    public HostelMenu() {
+    public StudentAllocationMenu() {
         this.scanner = new Scanner(System.in);
     }
 
