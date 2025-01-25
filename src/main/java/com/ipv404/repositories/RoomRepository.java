@@ -64,7 +64,7 @@ public class RoomRepository {
             }
         }
 
-    public Student findById(Long id) {
+    public Room findById(Long id) {
         String sql = "SELECT * FROM student WHERE room_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -81,29 +81,29 @@ public class RoomRepository {
         }
     }
 
-    public List<Student> findAll() {
+    public List<Room> findAll() {
         String sql = "SELECT * FROM room";
-        List<Room> students = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
 
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                students.add(mapResultSetToRoom(rs));
+                rooms.add(mapResultSetToRoom(rs));
             }
-            return room;
+            return rooms;
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving students", e);
+            throw new RuntimeException("Error retrieving rooms", e);
         }
     }
 
-    public Student findByRoomId(String studentId) {
-        String sql = "SELECT * FROM student WHERE student_id = ?";
+    public Room findByRoomId(String roomId) {
+        String sql = "SELECT * FROM room WHERE room_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, studentId);
+            pstmt.setString(1, roomId);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -111,7 +111,7 @@ public class RoomRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding student by Student ID", e);
+            throw new RuntimeException("Error finding room by Room ID", e);
         }
     }
 }

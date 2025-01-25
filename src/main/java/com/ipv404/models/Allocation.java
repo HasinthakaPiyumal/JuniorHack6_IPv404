@@ -7,8 +7,7 @@ public class Allocation {
     private String roomId;
     private String date;
 
-    public Allocation(int allocationId, String studentId, String hostelId, String roomId) {
-        this.allocationId = allocationId;
+    public Allocation( String studentId, String hostelId, String roomId) {
         this.studentId = studentId;
         this.hostelId = hostelId;
         this.roomId = roomId;

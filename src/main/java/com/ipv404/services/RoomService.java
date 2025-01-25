@@ -11,8 +11,8 @@ import java.util.List;
 public class RoomService {
     private final RoomRepository roomRepository;
 
-    public RoomServices(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
+    public RoomService() {
+        this.roomRepository = new RoomRepository();
     }
 
     public Room createRoom(Room room){

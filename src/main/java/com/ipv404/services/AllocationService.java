@@ -1,5 +1,7 @@
 package com.ipv404.services;
 
+import java.util.List;
+
 import com.ipv404.exceptions.NotFoundException;
 import com.ipv404.models.Allocation;
 import com.ipv404.models.Hostel;
@@ -9,8 +11,8 @@ public class AllocationService {
 
     private final AllocationRepository allocationRepository;
 
-    public AllocationService(AllocationRepository allocationRepository){
-        this.allocationRepository = allocationRepository;
+    public AllocationService(){
+        this.allocationRepository = new AllocationRepository();
     }
 
     public Allocation createAllocation(Allocation allocation){
@@ -23,5 +25,13 @@ public class AllocationService {
             throw new NotFoundException("Hostel not found with id: " + id);
         }
         return allocation;
+    }
+
+    public List<Allocation> getAllAllocations() {
+        return allocationRepository.findAll();
+    }
+
+    public boolean deleteAllocation(String id) {
+        return allocationRepository.delete(id);
     }
 }

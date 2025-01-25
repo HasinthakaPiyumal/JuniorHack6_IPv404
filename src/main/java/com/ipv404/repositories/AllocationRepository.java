@@ -41,7 +41,6 @@ public class AllocationRepository {
 
     private Allocation mapResultSetToAllocation(ResultSet rs) throws SQLException {
         Allocation allocation = new Allocation(
-                rs.getInt("allocation_id"),
                 rs.getString("student_id"),
                 rs.getString("hostel_id"),
                 rs.getString("room_id")
@@ -67,12 +66,12 @@ public class AllocationRepository {
         }
     }
 
-    public boolean delete(Long id) {
+    public boolean delete(String id) {
         String sql = "DELETE FROM allocation WHERE allocation_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
