@@ -1,56 +1,57 @@
 package com.ipv404.repositories;
 
+import com.ipv404.models.Allocation;
 import com.ipv404.models.Hostel;
-import com.ipv404.models.Student;
 import com.ipv404.utils.DatabaseUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostelRepository {
+public class AllocationRepository {
 
     private final DatabaseUtil dbUtil;
 
-    public HostelRepository() {
+    public AllocationRepository(){
         this.dbUtil = DatabaseUtil.getInstance();
     }
 
-    public Hostel save(Hostel hostel){
-        String sql = "INSERT INTO hostel (hostel_id, name, address) VALUES (?, ?, ?)";
+    public Allocation save(Allocation allocation){
+        String sql = "INSERT INTO allocation (student_id, room_id, hostel_id) VALUES (?, ?, ?)";
 
         try{
             try (Connection conn = dbUtil.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                pstmt.setString(1, hostel.getHostelId());
-                pstmt.setString(2, hostel.getHostelName());
-                pstmt.setString(3, hostel.getAddress());
+                pstmt.setString(1, allocation.getStudentId());
+                pstmt.setString(2, allocation.getRoomId());
+                pstmt.setString(3, allocation.getHostelId());
                 pstmt.executeUpdate();
 
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        hostel.setHostelId(generatedKeys.getString("student_id"));
+                        allocation.setAllocationId(generatedKeys.getInt("allocation_id"));
                     }
                 }
-                return hostel;
-        }
+                return allocation;
+            }
         }catch (SQLException e) {
-            throw new RuntimeException("Error finding Hostel", e);
+            throw new RuntimeException("Error finding allocation", e);
         }
     }
 
-    private Hostel mapResultSetToHostel(ResultSet rs) throws SQLException {
-        Hostel hostel = new Hostel(
+    private Allocation mapResultSetToAllocation(ResultSet rs) throws SQLException {
+        Allocation allocation = new Allocation(
+                rs.getInt("allocation_id"),
+                rs.getString("student_id"),
                 rs.getString("hostel_id"),
-                rs.getString("name"),
-                rs.getString("address")
+                rs.getString("room_id")
 
         );
-        return hostel;
+        return allocation;
     }
 
-    public Hostel findById(Long id) {
-        String sql = "SELECT * FROM hostel WHERE hostel_id = ?";
+    public Allocation findById(Long id) {
+        String sql = "SELECT * FROM allocation WHERE allocation_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -58,16 +59,16 @@ public class HostelRepository {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return mapResultSetToHostel(rs);
+                return mapResultSetToAllocation(rs);
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding Hostel", e);
+            throw new RuntimeException("Error finding Allocation", e);
         }
     }
 
     public boolean delete(Long id) {
-        String sql = "DELETE FROM hostel WHERE hostel_id = ?";
+        String sql = "DELETE FROM allocation WHERE allocation_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -75,26 +76,24 @@ public class HostelRepository {
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting hostel", e);
+            throw new RuntimeException("Error deleting allocation", e);
         }
     }
 
-    public List<Hostel> findAll() {
-        String sql = "SELECT * FROM hostel";
-        List<Hostel> hostels = new ArrayList<>();
+    public List<Allocation> findAll() {
+        String sql = "SELECT * FROM allocation";
+        List<Allocation> allocations = new ArrayList<>();
 
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                hostels.add(mapResultSetToHostel(rs));
+                allocations.add(mapResultSetToAllocation(rs));
             }
-            return hostels;
+            return allocations;
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving hostels", e);
+            throw new RuntimeException("Error retrieving allocations", e);
         }
     }
-
-
 }
