@@ -14,7 +14,7 @@ public class StudentRepository {
     }
 
     public Student save(Student student) {
-        String sql = "INSERT INTO student (student_id, name, birth_day, department, faculty, academic_year) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO student (student_id, name, birthday, department, faculty, academic_year) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = dbUtil.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, student.getStudentId());
@@ -41,7 +41,7 @@ public class StudentRepository {
         Student student = new Student(
             rs.getString("student_id"),
             rs.getString("name"),
-            rs.getString("birth_day"),
+            rs.getString("birthday"),
             rs.getString("academic_year"),
             rs.getString("department"),
             rs.getString("faculty")
@@ -66,14 +66,15 @@ public class StudentRepository {
         }
     }
 
-    public boolean delete(Long id) {
+    public boolean delete(String id) {
         String sql = "DELETE FROM student WHERE student_id = ?";
         try (Connection conn = dbUtil.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
+
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting student", e);
         }
@@ -88,10 +89,12 @@ public class StudentRepository {
                 ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
+                System.out.println(rs.getString("student_id"));
                 students.add(mapResultSetToStudent(rs));
             }
             return students;
         } catch (SQLException e) {
+            System.out.println(e);
             throw new RuntimeException("Error retrieving students", e);
         }
     }
@@ -110,6 +113,22 @@ public class StudentRepository {
             return null;
         } catch (SQLException e) {
             throw new RuntimeException("Error finding student by Student ID", e);
+        }
+    }
+
+    public void update(Student student) {
+        String sql = "UPDATE student SET name = ?, birthday = ?, department = ?, faculty = ?, academic_year = ? WHERE student_id = ?";
+        try (Connection conn = dbUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, student.getName());
+            pstmt.setString(2, student.getBirthDay());
+            pstmt.setString(3, student.getDepartment());
+            pstmt.setString(4, student.getFaculty());
+            pstmt.setString(5, student.getAcademicYear());
+            pstmt.setString(6, student.getStudentId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating student", e);
         }
     }
 }

@@ -19,6 +19,8 @@ public class MainMenu {
                     hostelMenu.display();
                     break;
                 case 2:
+                    StudentMenu studentMenu = new StudentMenu();
+                    studentMenu.display();
                     break;
                 case 3:
                     break;

@@ -24,7 +24,7 @@ public class StudentService {
         return student;
     }
 
-    public void deleteStudent(Long id) throws NotFoundException {
+    public void deleteStudent(String id) throws NotFoundException {
         if (!studentRepository.delete(id)) {
             throw new NotFoundException("Student not found with id: " + id);
         }
@@ -32,5 +32,9 @@ public class StudentService {
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
+    }
+
+    public void updateStudent(Student student) {
+        studentRepository.update(student);
     }
 } 
