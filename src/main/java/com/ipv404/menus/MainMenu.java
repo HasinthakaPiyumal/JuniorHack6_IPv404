@@ -23,6 +23,8 @@ public class MainMenu {
                     studentMenu.display();
                     break;
                 case 3:
+                    StudentAllocationMenu allocationMenu = new StudentAllocationMenu();
+                    allocationMenu.display();
                     break;
                 case 0:
                     System.exit(0);
