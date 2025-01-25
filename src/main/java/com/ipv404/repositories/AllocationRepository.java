@@ -2,6 +2,7 @@ package com.ipv404.repositories;
 
 import com.ipv404.models.Allocation;
 import com.ipv404.models.Hostel;
+import com.ipv404.models.Student;
 import com.ipv404.utils.DatabaseUtil;
 
 import java.sql.*;
@@ -94,6 +95,20 @@ public class AllocationRepository {
             return allocations;
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving allocations", e);
+        }
+    }
+
+    public void update(Allocation allocation) {
+        String sql = "UPDATE allocation SET student_id = ?, room_id = ?, hostel_id = ? WHERE allocation_id = ?";
+        try (Connection conn = dbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, allocation.getStudentId());
+            pstmt.setString(2, allocation.getRoomId());
+            pstmt.setString(3, allocation.getHostelId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating allocation", e);
         }
     }
 }

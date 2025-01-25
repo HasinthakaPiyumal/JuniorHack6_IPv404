@@ -36,4 +36,8 @@ public class HostelServices {
     public List<Hostel> getAllHostels() {
         return hostelRepository.findAll();
     }
+
+    public void updateHostel(Hostel hostel) {
+        hostelRepository.update(hostel);
+    }
 }
