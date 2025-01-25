@@ -1,9 +1,7 @@
 package com.ipv404.services;
 
 import com.ipv404.exceptions.NotFoundException;
-import com.ipv404.models.Hostel;
 import com.ipv404.models.Room;
-import com.ipv404.repositories.HostelRepository;
 import com.ipv404.repositories.RoomRepository;
 
 import java.util.List;
