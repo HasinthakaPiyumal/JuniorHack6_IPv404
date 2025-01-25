@@ -5,7 +5,7 @@ import com.ipv404.utils.ConfigManager;
 
 public class App {
     public static void main(String[] args) {
-        System.out.println("Starting " + ConfigManager.getInstance().getProperty("app.name") +
+        System.out.println("-Welcome to the" + ConfigManager.getInstance().getProperty("app.name") + "! -----"+ ConfigManager.getInstance().getProperty("app.university") +"-----" +
                 " v" + ConfigManager.getInstance().getProperty("app.version"));
 
         try {
