@@ -23,6 +23,7 @@ public class StudentAllocationMenu {
         System.out.println("[3] View an allocation");
         System.out.println("[0] Back");
         int choice = scanner.nextInt();
+        scanner.nextLine();
         switch (choice) {
             case 1:
                 allocateRoom();
