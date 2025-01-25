@@ -1,9 +1,12 @@
 package com.ipv404.repositories;
 
 import com.ipv404.models.Hostel;
+import com.ipv404.models.Student;
 import com.ipv404.utils.DatabaseUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HostelRepository {
 
@@ -36,8 +39,35 @@ public class HostelRepository {
         }
     }
 
+    private Hostel mapResultSetToHostel(ResultSet rs) throws SQLException {
+        Hostel hostel = new Hostel(
+                rs.getString("hostel_id"),
+                rs.getString("name"),
+                rs.getString("address")
+
+        );
+        return hostel;
+    }
+
+    public Hostel findById(Long id) {
+        String sql = "SELECT * FROM hostl WHERE hostel_id = ?";
+        try (Connection conn = dbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setLong(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return mapResultSetToHostel(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding Hostel", e);
+        }
+    }
+
     public boolean delete(Long id) {
-        String sql = "DELETE FROM student WHERE student_id = ?";
+        String sql = "DELETE FROM hostel WHERE hostel_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -45,7 +75,26 @@ public class HostelRepository {
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting student", e);
+            throw new RuntimeException("Error deleting hostel", e);
         }
     }
+
+    public List<Hostel> findAll() {
+        String sql = "SELECT * FROM hostel";
+        List<Hostel> hostels = new ArrayList<>();
+
+        try (Connection conn = dbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                hostels.add(mapResultSetToHostel(rs));
+            }
+            return hostels;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving hostels", e);
+        }
+    }
+
+
 }
