@@ -29,5 +29,12 @@ public class StudentAllocationMenu {
                 display();
         }
     }
+
+    private void addHostel() {
+        System.out.println("Please enter the new hostel details ..");
+        String hostelName = MenuUtils.requiredInput(scanner, "Hostel Name: ");
+        String hostelAddress = MenuUtils.requiredInput(scanner, "Hostel Address: ");
+    }
+    
 }
 

@@ -22,6 +22,6 @@ public class AllocationService {
         if (allocation == null) {
             throw new NotFoundException("Hostel not found with id: " + id);
         }
-        return hostel;
+        return allocation;
     }
 }

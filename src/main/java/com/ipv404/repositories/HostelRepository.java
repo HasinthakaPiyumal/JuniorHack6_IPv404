@@ -66,12 +66,12 @@ public class HostelRepository {
         }
     }
 
-    public boolean delete(Long id) {
+    public boolean delete(String id) {
         String sql = "DELETE FROM hostel WHERE hostel_id = ?";
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
@@ -95,6 +95,20 @@ public class HostelRepository {
             throw new RuntimeException("Error retrieving hostels", e);
         }
     }
+
+    public boolean update(Hostel hostel) {
+        String sql = "UPDATE hostel SET name = ?, address = ? WHERE hostel_id = ?";
+        try (Connection conn = dbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, hostel.getHostelName());
+            pstmt.setString(2, hostel.getAddress());
+            pstmt.setString(3, hostel.getHostelId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating hostel", e);
+        }
+    }
+
 
 
 }

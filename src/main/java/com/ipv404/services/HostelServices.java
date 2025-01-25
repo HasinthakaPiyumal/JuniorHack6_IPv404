@@ -11,8 +11,8 @@ public class HostelServices {
 
     private final HostelRepository hostelRepository;
 
-    public HostelServices(HostelRepository hostelRepository) {
-        this.hostelRepository = hostelRepository;
+    public HostelServices() {
+        this.hostelRepository = new HostelRepository();
     }
 
     public Hostel createHostel(Hostel hostel){
@@ -27,7 +27,7 @@ public class HostelServices {
         return hostel;
     }
 
-    public void deleteHostel(Long id) throws NotFoundException {
+    public void deleteHostel(String id) throws NotFoundException {
         if (!hostelRepository.delete(id)) {
             throw new NotFoundException("Hostel not found with id: " + id);
         }
@@ -35,5 +35,9 @@ public class HostelServices {
 
     public List<Hostel> getAllHostels() {
         return hostelRepository.findAll();
+    }
+
+    public boolean updateHostel(Hostel hostel) {
+        return hostelRepository.update(hostel);
     }
 }
